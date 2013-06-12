@@ -1,20 +1,28 @@
 package com.util;
 
 /**
- *
- * @author Miguel Rdz (nkasee)
+ * @author Miguel Rdz
+ * @since 12/5/2013
+ * @version 1.0
  */
 import java.sql.*;
 
 public class Connector {
 
-    private static String db = "db";
-    private static String user = "root";
-    private static String password = "1234";
-    private static String url = "jdbc:mysql://localhost:3306/" + db;
-    private static String driverName = "com.mysql.jdbc.Driver";
+    private static final String db = "db";
+    private static final String user = "root";
+    private static final String password = "1234";
+    private static final String url = "jdbc:mysql://localhost:3306/" + db;
+    private static final String driverName = "com.mysql.jdbc.Driver";
     private static Connection conn;
 
+    /**
+     * Obtiene la conexion a la base de datos.
+     *
+     * @return conn La conexion activa a la base de datos.
+     * @throws SQLException error en la conexion a la base de datos.
+     * @throws ClassNotFoundException No se encuentra el driver JDBC.
+     */
     public static Connection getConnection() {
         try {
             Class.forName(driverName);

@@ -9,8 +9,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
  * @author Miguel Rdz
+ * @since 12/5/2013
+ * @version 1.0
  */
 public class DAL_User {
 
@@ -18,6 +19,14 @@ public class DAL_User {
     private Statement stmt = null;
     private ResultSet rs = null;
 
+    /**
+     * Consulta en la base de datos la existencia de un usuario.
+     *
+     * @param user El nombre de usuario.
+     * @param´password La contraseña del usuario.
+     * @return true si existe, de lo contrario false.
+     * @throws SQLException si no hay acceso a la base de datos.
+     */
     public boolean autenticateUser(String user, String password) {
         try {
             conn = Connector.getConnection();
