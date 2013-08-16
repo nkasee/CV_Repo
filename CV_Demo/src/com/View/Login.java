@@ -1,6 +1,8 @@
 package com.View;
 
 import com.BLL.BLL_User;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 
 /**
@@ -15,6 +17,16 @@ public class Login extends javax.swing.JFrame {
      */
     public Login() {
         initComponents();
+        txt_pass.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                int key = e.getKeyCode();
+                if (key == KeyEvent.VK_ENTER) {
+                    autenticateUser();
+                }
+            }
+        });
+
     }
 
     /**
@@ -37,12 +49,20 @@ public class Login extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Login");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        setName("Despacho"); // NOI18N
+        setResizable(false);
 
         pnl_login.setBorder(javax.swing.BorderFactory.createTitledBorder("Iniciar sesión"));
 
         lbl_user.setText("Usuario");
 
         lbl_pass.setText("Contraseña");
+
+        txt_user.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txt_userMouseClicked(evt);
+            }
+        });
 
         btn_ok.setText("Aceptar");
         btn_ok.addActionListener(new java.awt.event.ActionListener() {
@@ -55,6 +75,12 @@ public class Login extends javax.swing.JFrame {
         btn_cancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_cancelActionPerformed(evt);
+            }
+        });
+
+        txt_pass.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txt_passMouseClicked(evt);
             }
         });
 
@@ -119,29 +145,23 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_okActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_okActionPerformed
-        BLL_User usr = new BLL_User();
-        if (!txt_user.getText().equals("") && !txt_pass.getPassword().equals(null)) {
-            if (usr.autenticateUser(txt_user.getText(), new String(txt_pass.getPassword()))) {
-                Main mainFrame = new Main();
-                mainFrame.setVisible(true);
-                this.dispose();
-            } else {
-                JOptionPane.showMessageDialog(null, "Nombre de usuario o contraseña inválidos.", "Error de autenticación", JOptionPane.WARNING_MESSAGE);
-                txt_user.setText("");
-                txt_pass.setText("");
-            }
-        }
-        else {
-                JOptionPane.showMessageDialog(null, "Por favor ingrese un nombre de usuario y contraseña.", "Debe llenar todos los campos", JOptionPane.INFORMATION_MESSAGE);
-                txt_user.setText("");
-                txt_pass.setText("");
-            }
+        autenticateUser();
 
     }//GEN-LAST:event_btn_okActionPerformed
 
     private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed
         System.exit(0);
     }//GEN-LAST:event_btn_cancelActionPerformed
+
+    private void txt_userMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txt_userMouseClicked
+        Keyboardx kb = new Keyboardx("Teclado - Nombre de usuario",false);
+        kb.setVisible(true);
+    }//GEN-LAST:event_txt_userMouseClicked
+
+    private void txt_passMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txt_passMouseClicked
+        Keyboardx kb = new Keyboardx("Teclado - Contraseña",true);
+        kb.setVisible(true);
+    }//GEN-LAST:event_txt_passMouseClicked
 
     /**
      * @param args the command line arguments
@@ -178,7 +198,23 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_pass;
     private javax.swing.JLabel lbl_user;
     private javax.swing.JPanel pnl_login;
-    private javax.swing.JPasswordField txt_pass;
-    private javax.swing.JTextField txt_user;
+    public javax.swing.JPasswordField txt_pass;
+    public javax.swing.JTextField txt_user;
     // End of variables declaration//GEN-END:variables
+
+    private void autenticateUser() {
+        BLL_User usr = new BLL_User();
+        if (!txt_user.getText().equals("") && !txt_pass.getPassword().toString().equals("")) {
+            if (usr.autenticateUser(txt_user.getText(), new String(txt_pass.getPassword()))) {
+                Despacho_Main mainFrame = new Despacho_Main();
+                mainFrame.setVisible(true);
+                this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(null, "Nombre de usuario o contraseña inválidos.", "Error de autenticación", JOptionPane.WARNING_MESSAGE);
+                txt_pass.setText("");
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Por favor ingrese un nombre de usuario y contraseña.", "Debe llenar todos los campos", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
 }
